@@ -1,0 +1,143 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/affiliate_catalog/app/node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model AffiliateProgram {
+  id             String   @id @default(cuid())
+  name           String
+  baseUrl        String
+  commissionRate Float
+  cookieDays     Int
+  restrictions   String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  products       Product[]
+  productImports ProductImport[]
+
+  @@map("affiliate_programs")
+}
+
+model Category {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String  @unique
+  parentId    String?
+  description String?
+  imageUrl    String?
+  isActive    Boolean @default(true)
+
+  parent     Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children   Category[] @relation("CategoryHierarchy")
+  products   Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                 String   @id @default(cuid())
+  externalId         String   // g:id or ITEM_ID from XML
+  name               String
+  description        String?
+  price              Float
+  salePrice          Float?
+  currency           String   @default("CZK")
+  originalUrl        String
+  imageUrl           String?
+  brand              String?
+  model              String?
+  sku                String?
+  ean                String?
+  availability       String?
+  condition          String?
+  shippingWeight     Float?
+  isActive           Boolean  @default(true)
+  affiliateProgramId String
+  categoryId         String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  affiliateProgram AffiliateProgram    @relation(fields: [affiliateProgramId], references: [id])
+  category         Category?           @relation(fields: [categoryId], references: [id])
+  attributes       ProductAttribute[]
+  wishlists        Wishlist[]
+
+  @@unique([affiliateProgramId, externalId])
+  @@map("products")
+}
+
+model ProductAttribute {
+  id        String @id @default(cuid())
+  productId String
+  name      String
+  value     String
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_attributes")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String?
+  lastName     String?
+  isAdmin      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  wishlists Wishlist[]
+
+  @@map("users")
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("wishlists")
+}
+
+model ProductImport {
+  id                 String           @id @default(cuid())
+  affiliateProgramId String
+  importDate         DateTime         @default(now())
+  status             ImportStatus     @default(PENDING)
+  recordsProcessed   Int              @default(0)
+  recordsSuccess     Int              @default(0)
+  recordsError       Int              @default(0)
+  errorLog           String?
+  fileName           String?
+  xmlFormat          XmlFormat
+  
+  affiliateProgram AffiliateProgram @relation(fields: [affiliateProgramId], references: [id])
+
+  @@map("product_imports")
+}
+
+enum ImportStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum XmlFormat {
+  GOOGLE_RSS
+  SHOPTET
+}
