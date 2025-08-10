@@ -1,7 +1,0 @@
-.build/types/app/api/auth/[...nextauth]/route.ts(8,13): error TS2344: Type 'OmitWithTag<typeof import("/home/ubuntu/affiliate_catalog/app/app/api/auth/[...nextauth]/route"), "POST" | "dynamic" | "GET" | "HEAD" | "OPTIONS" | "PUT" | "DELETE" | "PATCH" | "config" | ... 6 more ... | "maxDuration", "">' does not satisfy the constraint '{ [x: string]: never; }'.
-  Property 'authOptions' is incompatible with index signature.
-    Type 'AuthOptions' is not assignable to type 'never'.
-.next/types/app/api/auth/[...nextauth]/route.ts(8,13): error TS2344: Type 'OmitWithTag<typeof import("/home/ubuntu/affiliate_catalog/app/app/api/auth/[...nextauth]/route"), "POST" | "dynamic" | "GET" | "HEAD" | "OPTIONS" | "PUT" | "DELETE" | "PATCH" | "config" | ... 6 more ... | "maxDuration", "">' does not satisfy the constraint '{ [x: string]: never; }'.
-  Property 'authOptions' is incompatible with index signature.
-    Type 'AuthOptions' is not assignable to type 'never'.
-exit_code=2

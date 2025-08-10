@@ -136,3 +136,4 @@ app/prisma/migrations/
 
 # Abacus files  
 .abacus.donotdelete
+.logs/
