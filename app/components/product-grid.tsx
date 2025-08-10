@@ -37,14 +37,14 @@ export function ProductGrid({ products, isLoading }: ProductGridProps) {
   if (products.length === 0) {
     return (
       <div className="text-center py-16">
-        <p className="text-lg text-muted-foreground">No products found</p>
-        <p className="text-sm text-muted-foreground mt-2">Try adjusting your search or filters</p>
+        <p className="text-lg text-muted-foreground">Žádné produkty nebyly nalezeny</p>
+        <p className="text-sm text-muted-foreground mt-2">Zkuste upravit vyhledávání nebo filtry</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

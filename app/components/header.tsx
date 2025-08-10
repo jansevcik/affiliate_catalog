@@ -48,7 +48,7 @@ export function Header({ onSearch }: HeaderProps) {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 type="search"
-                placeholder="Search products..."
+                placeholder="Vyhledat produkty..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -76,13 +76,13 @@ export function Header({ onSearch }: HeaderProps) {
                     <DropdownMenuItem asChild>
                       <Link href="/profile" className="flex items-center">
                         <User className="h-4 w-4 mr-2" />
-                        Profile
+                        Profil
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link href="/wishlist" className="flex items-center">
                         <Heart className="h-4 w-4 mr-2" />
-                        Wishlist
+                        Seznam přání
                       </Link>
                     </DropdownMenuItem>
                     {session.user?.isAdmin && (
@@ -91,7 +91,7 @@ export function Header({ onSearch }: HeaderProps) {
                         <DropdownMenuItem asChild>
                           <Link href="/admin" className="flex items-center">
                             <Settings className="h-4 w-4 mr-2" />
-                            Admin Panel
+                            Administrace
                           </Link>
                         </DropdownMenuItem>
                       </>
@@ -99,7 +99,7 @@ export function Header({ onSearch }: HeaderProps) {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleSignOut} className="flex items-center">
                       <LogOut className="h-4 w-4 mr-2" />
-                      Sign Out
+                      Odhlásit se
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -107,10 +107,10 @@ export function Header({ onSearch }: HeaderProps) {
             ) : (
               <div className="flex items-center space-x-2">
                 <Link href="/auth/signin">
-                  <Button variant="ghost">Sign In</Button>
+                  <Button variant="ghost">Přihlásit se</Button>
                 </Link>
                 <Link href="/auth/signup">
-                  <Button>Sign Up</Button>
+                  <Button>Registrovat se</Button>
                 </Link>
               </div>
             )}

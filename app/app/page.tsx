@@ -125,10 +125,10 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="mb-8 text-center">
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            Discover Amazing Products
+            Objevte úžasné produkty
           </h1>
           <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Find the best deals from trusted affiliate partners across various categories
+            Najděte nejlepší nabídky od důvěryhodných partnerů v různých kategoriích
           </p>
         </section>
 
@@ -138,14 +138,14 @@ export default function HomePage() {
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center">
                 <Filter className="h-5 w-5 mr-2" />
-                Filters & Sorting
+                Filtry a řazení
               </CardTitle>
               <Button 
                 variant="outline" 
                 size="sm"
                 onClick={() => setShowFilters(!showFilters)}
               >
-                {showFilters ? 'Hide' : 'Show'} Filters
+                {showFilters ? 'Skrýt' : 'Zobrazit'} filtry
               </Button>
             </div>
           </CardHeader>
@@ -153,40 +153,40 @@ export default function HomePage() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Min Price</label>
+                  <label className="text-sm font-medium mb-2 block">Min. cena</label>
                   <Input
                     type="number"
-                    placeholder="Min price"
+                    placeholder="Minimální cena"
                     value={minPrice}
                     onChange={(e) => setMinPrice(e.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Max Price</label>
+                  <label className="text-sm font-medium mb-2 block">Max. cena</label>
                   <Input
                     type="number"
-                    placeholder="Max price"
+                    placeholder="Maximální cena"
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(e.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Sort By</label>
+                  <label className="text-sm font-medium mb-2 block">Řadit podle</label>
                   <Select value={sortBy} onValueChange={setSortBy}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="newest">Newest First</SelectItem>
-                      <SelectItem value="price-low">Price: Low to High</SelectItem>
-                      <SelectItem value="price-high">Price: High to Low</SelectItem>
-                      <SelectItem value="name">Name A-Z</SelectItem>
+                      <SelectItem value="newest">Nejnovější</SelectItem>
+                      <SelectItem value="price-low">Cena: od nejnižší</SelectItem>
+                      <SelectItem value="price-high">Cena: od nejvyšší</SelectItem>
+                      <SelectItem value="name">Název A-Z</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="flex items-end">
                   <Button variant="outline" onClick={clearFilters} className="w-full">
-                    Clear Filters
+                    Vymazat filtry
                   </Button>
                 </div>
               </div>
@@ -201,7 +201,7 @@ export default function HomePage() {
         {!isLoading && currentPage < totalPages && (
           <div className="text-center mt-8">
             <Button onClick={loadMore} size="lg">
-              Load More Products
+              Načíst další produkty
             </Button>
           </div>
         )}
@@ -209,7 +209,7 @@ export default function HomePage() {
         {/* Pagination Info */}
         {!isLoading && products.length > 0 && (
           <div className="text-center mt-4 text-sm text-muted-foreground">
-            Page {currentPage} of {totalPages}
+            Strana {currentPage} z {totalPages}
           </div>
         )}
       </div>

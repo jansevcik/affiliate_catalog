@@ -2,9 +2,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronRight, ChevronDown, Folder } from 'lucide-react';
+import { ChevronRight, ChevronDown, Folder, Maximize2, Minimize2 } from 'lucide-react';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 interface Category {
   id: string;
@@ -25,6 +26,7 @@ export function CategorySidebar({ onCategorySelect, selectedCategoryId }: Catego
   const [categories, setCategories] = useState<Category[]>([]);
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -63,37 +65,49 @@ export function CategorySidebar({ onCategorySelect, selectedCategoryId }: Catego
     return (
       <div key={category.id}>
         <div className="flex items-center">
-          <Button
-            variant={isSelected ? "secondary" : "ghost"}
-            className="w-full justify-start text-left h-auto py-2 px-2"
-            style={{ paddingLeft: `${paddingLeft}px` }}
-            onClick={() => onCategorySelect(isSelected ? null : category.id)}
-          >
-            <div className="flex items-center flex-1 min-w-0">
-              {hasChildren && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleExpanded(category.id);
-                  }}
-                  className="flex-shrink-0 p-1 -ml-1 mr-1"
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={isSelected ? "secondary" : "ghost"}
+                  className="w-full justify-start text-left h-auto py-2 px-2"
+                  style={{ paddingLeft: `${paddingLeft}px` }}
+                  onClick={() => onCategorySelect(isSelected ? null : category.id)}
                 >
-                  {isExpanded ? (
-                    <ChevronDown className="h-3 w-3" />
-                  ) : (
-                    <ChevronRight className="h-3 w-3" />
-                  )}
-                </button>
-              )}
-              <Folder className="h-4 w-4 mr-2 flex-shrink-0" />
-              <span className="truncate text-sm">{category.name}</span>
-              {category._count?.products !== undefined && (
-                <span className="ml-auto text-xs text-muted-foreground flex-shrink-0">
-                  ({category._count.products})
-                </span>
-              )}
-            </div>
-          </Button>
+                  <div className="flex items-center flex-1 min-w-0">
+                    {hasChildren && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleExpanded(category.id);
+                        }}
+                        className="flex-shrink-0 p-1 -ml-1 mr-1"
+                      >
+                        {isExpanded ? (
+                          <ChevronDown className="h-3 w-3" />
+                        ) : (
+                          <ChevronRight className="h-3 w-3" />
+                        )}
+                      </button>
+                    )}
+                    <Folder className="h-4 w-4 mr-2 flex-shrink-0" />
+                    <span className="truncate text-sm">{category.name}</span>
+                    {category._count?.products !== undefined && (
+                      <span className="ml-auto text-xs text-muted-foreground flex-shrink-0">
+                        ({category._count.products})
+                      </span>
+                    )}
+                  </div>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                <p>{category.name}</p>
+                {category._count?.products !== undefined && (
+                  <p className="text-xs">{category._count.products} produktů</p>
+                )}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
         
         {hasChildren && isExpanded && (
@@ -107,7 +121,7 @@ export function CategorySidebar({ onCategorySelect, selectedCategoryId }: Catego
 
   if (isLoading) {
     return (
-      <div className="w-64 bg-muted/20 p-4">
+      <div className={`${isExpanded ? 'w-96' : 'w-64'} bg-muted/20 p-4 transition-all duration-300`}>
         <div className="space-y-2">
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="h-8 bg-muted animate-pulse rounded" />
@@ -118,15 +132,29 @@ export function CategorySidebar({ onCategorySelect, selectedCategoryId }: Catego
   }
 
   return (
-    <div className="w-64 bg-muted/20 border-r">
+    <div className={`${isExpanded ? 'w-96' : 'w-64'} bg-muted/20 border-r transition-all duration-300`}>
       <div className="p-4">
-        <h2 className="font-semibold text-lg mb-4">Categories</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold text-lg">Kategorie</h2>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="h-8 w-8"
+          >
+            {isExpanded ? (
+              <Minimize2 className="h-4 w-4" />
+            ) : (
+              <Maximize2 className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
         <Button
           variant={selectedCategoryId === null ? "secondary" : "ghost"}
           className="w-full justify-start mb-2"
           onClick={() => onCategorySelect(null)}
         >
-          All Products
+          Všechny produkty
         </Button>
         <ScrollArea className="h-[calc(100vh-200px)]">
           <div className="space-y-1">

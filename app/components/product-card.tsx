@@ -82,10 +82,10 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+    <Card className="group hover:shadow-lg transition-all duration-300 overflow-hidden h-fit">
       <CardContent className="p-0">
         {/* Product Image */}
-        <div className="relative aspect-square bg-muted">
+        <div className="relative aspect-[4/3] bg-muted">
           {product.imageUrl && !imageError ? (
             <Image
               src={product.imageUrl}
@@ -96,7 +96,7 @@ export function ProductCard({ product }: ProductCardProps) {
             />
           ) : (
             <div className="absolute inset-0 bg-muted flex items-center justify-center">
-              <ShoppingCart className="h-12 w-12 text-muted-foreground" />
+              <ShoppingCart className="h-8 w-8 text-muted-foreground" />
             </div>
           )}
           
@@ -105,11 +105,11 @@ export function ProductCard({ product }: ProductCardProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute top-2 right-2 bg-background/80 hover:bg-background"
+              className="absolute top-1 right-1 bg-background/80 hover:bg-background h-7 w-7"
               onClick={handleWishlistToggle}
             >
               <Heart 
-                className={`h-4 w-4 ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} 
+                className={`h-3 w-3 ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} 
               />
             </Button>
           )}
@@ -118,15 +118,15 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.availability && (
             <Badge 
               variant={product.availability === 'in stock' ? 'default' : 'secondary'}
-              className="absolute bottom-2 left-2"
+              className="absolute bottom-1 left-1 text-xs px-1 py-0"
             >
-              {product.availability}
+              {product.availability === 'in stock' ? 'Skladem' : product.availability}
             </Badge>
           )}
         </div>
 
         {/* Product Info */}
-        <div className="p-4">
+        <div className="p-3">
           {/* Category */}
           {product.category && (
             <p className="text-xs text-muted-foreground mb-1">
@@ -136,32 +136,32 @@ export function ProductCard({ product }: ProductCardProps) {
 
           {/* Brand */}
           {product.brand && (
-            <p className="text-sm font-medium text-primary mb-1">
+            <p className="text-xs font-medium text-primary mb-1">
               {product.brand}
             </p>
           )}
 
           {/* Product Name */}
           <Link href={`/products/${product.id}`}>
-            <h3 className="font-semibold text-sm mb-2 line-clamp-2 hover:text-primary transition-colors">
+            <h3 className="font-medium text-sm mb-2 line-clamp-2 hover:text-primary transition-colors leading-tight">
               {product.name}
             </h3>
           </Link>
 
           {/* Price */}
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center space-x-2">
+          <div className="mb-3">
+            <div className="flex items-center space-x-1">
               {product.salePrice && product.salePrice < product.price ? (
                 <>
-                  <span className="text-lg font-bold text-red-600">
+                  <span className="text-base font-bold text-red-600">
                     {formatPrice(product.salePrice, product.currency)}
                   </span>
-                  <span className="text-sm text-muted-foreground line-through">
+                  <span className="text-xs text-muted-foreground line-through">
                     {formatPrice(product.price, product.currency)}
                   </span>
                 </>
               ) : (
-                <span className="text-lg font-bold">
+                <span className="text-base font-bold">
                   {formatPrice(product.price, product.currency)}
                 </span>
               )}
@@ -169,18 +169,18 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex space-x-2">
+          <div className="flex space-x-1">
             <Button 
               onClick={handleAffiliateClick}
               className="flex-1"
               size="sm"
             >
-              <ExternalLink className="h-4 w-4 mr-2" />
-              Visit Store
+              <ExternalLink className="h-3 w-3 mr-1" />
+              Obchod
             </Button>
             <Link href={`/products/${product.id}`}>
-              <Button variant="outline" size="sm">
-                Details
+              <Button variant="outline" size="sm" className="px-2">
+                Detail
               </Button>
             </Link>
           </div>
