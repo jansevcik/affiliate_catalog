@@ -7,8 +7,9 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Starting database seed...');
 
-  // Create test admin user
+  // Create admin users
   const adminPasswordHash = await bcryptjs.hash('admin123', 12);
+  const janPasswordHash = await bcryptjs.hash('Jan80!', 12);
   const testPasswordHash = await bcryptjs.hash('johndoe123', 12);
 
   const adminUser = await prisma.user.upsert({
@@ -19,6 +20,18 @@ async function main() {
       passwordHash: adminPasswordHash,
       firstName: 'Admin',
       lastName: 'User',
+      isAdmin: true
+    }
+  });
+
+  const janUser = await prisma.user.upsert({
+    where: { email: 'sevcik.jan@seznam.cz' },
+    update: {},
+    create: {
+      email: 'sevcik.jan@seznam.cz',
+      passwordHash: janPasswordHash,
+      firstName: 'Jan',
+      lastName: 'Ševčík',
       isAdmin: true
     }
   });
@@ -336,8 +349,11 @@ async function main() {
   console.log('✅ Created wishlist items');
   console.log('🎉 Database seed completed successfully!');
   console.log();
-  console.log('Test accounts:');
+  console.log('Admin accounts:');
   console.log('  Admin: admin@test.com / admin123');
+  console.log('  Jan Ševčík: sevcik.jan@seznam.cz / Jan80!');
+  console.log();
+  console.log('Test user:');
   console.log('  User: john@doe.com / johndoe123');
 }
 
