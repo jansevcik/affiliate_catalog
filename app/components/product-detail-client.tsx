@@ -4,13 +4,14 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { Heart, ExternalLink, Share2, ArrowLeft, Package, Tag, Info } from 'lucide-react';
+import { Heart, ExternalLink, Share2, Package, Tag, Info } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
 import { useToast } from '../hooks/use-toast';
 import Link from 'next/link';
+import { ProductBreadcrumb } from './product-breadcrumb';
 
 interface ProductDetailProps {
   product: {
@@ -127,15 +128,8 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      {/* Back Button */}
-      <div className="mb-6">
-        <Link href="/">
-          <Button variant="ghost" className="mb-4">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Zpět na produkty
-          </Button>
-        </Link>
-      </div>
+      {/* Breadcrumb Navigation */}
+      <ProductBreadcrumb category={product.category} productName={product.name} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Product Image */}

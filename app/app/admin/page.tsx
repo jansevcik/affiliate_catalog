@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Upload, Plus, Settings, FileText, Package, TrendingUp } from 'lucide-react';
+import { Upload, Plus, Settings, FileText, Package, TrendingUp, Shield } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -24,6 +24,11 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (status === 'loading') return;
+    
+    if (!session) {
+      router.push('/auth/signin?callbackUrl=' + encodeURIComponent('/admin'));
+      return;
+    }
     
     if (!session?.user?.isAdmin) {
       router.push('/');
@@ -58,11 +63,44 @@ export default function AdminPage() {
   };
 
   if (status === 'loading') {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Načítá se...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <Shield className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+          <h2 className="text-xl font-semibold mb-2">Přihlášení požadováno</h2>
+          <p className="text-muted-foreground mb-4">Pro přístup k admin panelu se musíte přihlásit</p>
+          <Button onClick={() => router.push('/auth/signin?callbackUrl=' + encodeURIComponent('/admin'))}>
+            Přihlásit se
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   if (!session?.user?.isAdmin) {
-    return null;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <Shield className="h-16 w-16 mx-auto mb-4 text-red-500" />
+          <h2 className="text-xl font-semibold mb-2">Přístup odepřen</h2>
+          <p className="text-muted-foreground mb-4">Nemáte oprávnění pro přístup k admin panelu</p>
+          <Button onClick={() => router.push('/')}>
+            Zpět na hlavní stránku
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   return (

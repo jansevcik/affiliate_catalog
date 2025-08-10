@@ -37,8 +37,8 @@ export default function SignUpPage() {
     
     if (formData.password !== formData.confirmPassword) {
       toast({
-        title: 'Password Mismatch',
-        description: 'Passwords do not match',
+        title: 'Hesla se neshodují',
+        description: 'Zadaná hesla se neshodují',
         variant: 'destructive'
       });
       return;
@@ -46,8 +46,8 @@ export default function SignUpPage() {
 
     if (formData.password.length < 6) {
       toast({
-        title: 'Password Too Short',
-        description: 'Password must be at least 6 characters long',
+        title: 'Heslo je příliš krátké',
+        description: 'Heslo musí mít alespoň 6 znaků',
         variant: 'destructive'
       });
       return;
@@ -73,8 +73,8 @@ export default function SignUpPage() {
 
       if (response.ok) {
         toast({
-          title: 'Account Created!',
-          description: 'Your account has been created successfully'
+          title: 'Účet vytvořen!',
+          description: 'Váš účet byl úspěšně vytvořen'
         });
 
         // Automatically sign in the user
@@ -93,15 +93,15 @@ export default function SignUpPage() {
         }
       } else {
         toast({
-          title: 'Sign Up Failed',
-          description: data.error || 'Failed to create account',
+          title: 'Registrace se nezdařila',
+          description: data.error || 'Nepodařilo se vytvořit účet',
           variant: 'destructive'
         });
       }
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'An unexpected error occurred',
+        title: 'Chyba',
+        description: 'Došlo k neočekávané chybě',
         variant: 'destructive'
       });
     } finally {
@@ -113,9 +113,9 @@ export default function SignUpPage() {
     <div className="min-h-screen flex items-center justify-center bg-muted/20 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
+          <CardTitle className="text-2xl font-bold">Vytvořit účet</CardTitle>
           <CardDescription>
-            Join AffiliateHub and start exploring great products
+            Připojte se k AffiliateCatalog a začněte objevovat skvělé produkty
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -123,7 +123,7 @@ export default function SignUpPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label htmlFor="firstName" className="text-sm font-medium">
-                  First Name
+                  Jméno
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -131,7 +131,7 @@ export default function SignUpPage() {
                     id="firstName"
                     name="firstName"
                     type="text"
-                    placeholder="John"
+                    placeholder="Jan"
                     value={formData.firstName}
                     onChange={handleChange}
                     className="pl-10"
@@ -141,7 +141,7 @@ export default function SignUpPage() {
 
               <div className="space-y-2">
                 <label htmlFor="lastName" className="text-sm font-medium">
-                  Last Name
+                  Příjmení
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -149,7 +149,7 @@ export default function SignUpPage() {
                     id="lastName"
                     name="lastName"
                     type="text"
-                    placeholder="Doe"
+                    placeholder="Novák"
                     value={formData.lastName}
                     onChange={handleChange}
                     className="pl-10"
@@ -168,7 +168,7 @@ export default function SignUpPage() {
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder="jan@example.com"
                   value={formData.email}
                   onChange={handleChange}
                   className="pl-10"
@@ -179,7 +179,7 @@ export default function SignUpPage() {
 
             <div className="space-y-2">
               <label htmlFor="password" className="text-sm font-medium">
-                Password
+                Heslo
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -187,7 +187,7 @@ export default function SignUpPage() {
                   id="password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Create a password"
+                  placeholder="Vytvořte heslo"
                   value={formData.password}
                   onChange={handleChange}
                   className="pl-10 pr-10"
@@ -205,7 +205,7 @@ export default function SignUpPage() {
 
             <div className="space-y-2">
               <label htmlFor="confirmPassword" className="text-sm font-medium">
-                Confirm Password
+                Potvrzení hesla
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -213,7 +213,7 @@ export default function SignUpPage() {
                   id="confirmPassword"
                   name="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder="Confirm your password"
+                  placeholder="Potvrďte své heslo"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   className="pl-10 pr-10"
@@ -230,14 +230,14 @@ export default function SignUpPage() {
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Creating Account...' : 'Create Account'}
+              {isLoading ? 'Vytváření účtu...' : 'Vytvořit účet'}
             </Button>
           </form>
 
           <div className="mt-6 text-center text-sm">
-            <span className="text-muted-foreground">Already have an account? </span>
+            <span className="text-muted-foreground">Už máte účet? </span>
             <Link href="/auth/signin" className="text-primary hover:underline font-medium">
-              Sign in
+              Přihlásit se
             </Link>
           </div>
         </CardContent>

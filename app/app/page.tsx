@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { ProductGrid } from '@/components/product-grid';
 import { CategorySidebar } from '@/components/category-sidebar';
+import { MobileCategoryMenu } from '@/components/mobile-category-menu';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -91,6 +92,8 @@ export default function HomePage() {
     }
   };
 
+
+
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     setCurrentPage(1);
@@ -116,42 +119,52 @@ export default function HomePage() {
 
   return (
     <div className="flex min-h-screen">
-      <CategorySidebar 
-        onCategorySelect={handleCategorySelect}
-        selectedCategoryId={selectedCategoryId}
-      />
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block">
+        <CategorySidebar 
+          onCategorySelect={handleCategorySelect}
+          selectedCategoryId={selectedCategoryId}
+        />
+      </div>
       
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 md:p-6">
+        {/* Mobile Category Menu */}
+        <MobileCategoryMenu 
+          selectedCategory={selectedCategoryId || undefined}
+          onCategoryChange={(categoryId) => handleCategorySelect(categoryId || null)}
+        />
+        
         {/* Hero Section */}
-        <section className="mb-8 text-center">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+        <section className="mb-6 md:mb-8 text-center">
+          <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             Objevte úžasné produkty
           </h1>
-          <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground mb-4 md:mb-6 max-w-2xl mx-auto">
             Najděte nejlepší nabídky od důvěryhodných partnerů v různých kategoriích
           </p>
         </section>
 
         {/* Filters Section */}
-        <Card className="mb-6">
-          <CardHeader>
+        <Card className="mb-4 md:mb-6">
+          <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center">
-                <Filter className="h-5 w-5 mr-2" />
+              <CardTitle className="flex items-center text-base md:text-lg">
+                <Filter className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                 Filtry a řazení
               </CardTitle>
               <Button 
                 variant="outline" 
                 size="sm"
                 onClick={() => setShowFilters(!showFilters)}
+                className="text-xs md:text-sm"
               >
                 {showFilters ? 'Skrýt' : 'Zobrazit'} filtry
               </Button>
             </div>
           </CardHeader>
           {showFilters && (
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <CardContent className="pt-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                 <div>
                   <label className="text-sm font-medium mb-2 block">Min. cena</label>
                   <Input
@@ -159,6 +172,7 @@ export default function HomePage() {
                     placeholder="Minimální cena"
                     value={minPrice}
                     onChange={(e) => setMinPrice(e.target.value)}
+                    className="h-9"
                   />
                 </div>
                 <div>
@@ -168,12 +182,13 @@ export default function HomePage() {
                     placeholder="Maximální cena"
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(e.target.value)}
+                    className="h-9"
                   />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">Řadit podle</label>
                   <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger>
+                    <SelectTrigger className="h-9">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -184,8 +199,8 @@ export default function HomePage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="flex items-end">
-                  <Button variant="outline" onClick={clearFilters} className="w-full">
+                <div className="flex items-end sm:col-span-2 lg:col-span-1">
+                  <Button variant="outline" onClick={clearFilters} className="w-full h-9">
                     Vymazat filtry
                   </Button>
                 </div>

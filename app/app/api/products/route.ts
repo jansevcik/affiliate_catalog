@@ -10,12 +10,64 @@ const prisma = new PrismaClient();
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
+    
+    // Validate and parse parameters
+    const pageParam = searchParams.get('page') || '1';
+    const limitParam = searchParams.get('limit') || '20';
+    const minPriceParam = searchParams.get('minPrice');
+    const maxPriceParam = searchParams.get('maxPrice');
+    
+    const page = parseInt(pageParam);
+    const limit = parseInt(limitParam);
+    
+    // Validate page and limit
+    if (isNaN(page) || page < 1) {
+      return NextResponse.json(
+        { error: 'Neplatná stránka. Stránka musí být kladné číslo.' },
+        { status: 400 }
+      );
+    }
+    
+    if (isNaN(limit) || limit < 1 || limit > 100) {
+      return NextResponse.json(
+        { error: 'Neplatný limit. Limit musí být mezi 1 a 100.' },
+        { status: 400 }
+      );
+    }
+    
+    // Parse and validate price parameters
+    let minPrice: number | undefined = undefined;
+    let maxPrice: number | undefined = undefined;
+    
+    if (minPriceParam) {
+      minPrice = parseFloat(minPriceParam);
+      if (isNaN(minPrice) || minPrice < 0) {
+        return NextResponse.json(
+          { error: 'Neplatná minimální cena. Musí být nezáporné číslo.' },
+          { status: 400 }
+        );
+      }
+    }
+    
+    if (maxPriceParam) {
+      maxPrice = parseFloat(maxPriceParam);
+      if (isNaN(maxPrice) || maxPrice < 0) {
+        return NextResponse.json(
+          { error: 'Neplatná maximální cena. Musí být nezáporné číslo.' },
+          { status: 400 }
+        );
+      }
+    }
+    
+    if (minPrice !== undefined && maxPrice !== undefined && minPrice > maxPrice) {
+      return NextResponse.json(
+        { error: 'Minimální cena nemůže být vyšší než maximální cena.' },
+        { status: 400 }
+      );
+    }
+    
     const search = searchParams.get('search') || '';
     const categoryId = searchParams.get('categoryId');
-    const minPrice = searchParams.get('minPrice') ? parseFloat(searchParams.get('minPrice')!) : undefined;
-    const maxPrice = searchParams.get('maxPrice') ? parseFloat(searchParams.get('maxPrice')!) : undefined;
     const brand = searchParams.get('brand');
 
     const skip = (page - 1) * limit;

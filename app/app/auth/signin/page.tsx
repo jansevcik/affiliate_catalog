@@ -32,14 +32,14 @@ export default function SignInPage() {
 
       if (result?.error) {
         toast({
-          title: 'Sign In Failed',
-          description: 'Invalid email or password',
+          title: 'Přihlášení se nezdařilo',
+          description: 'Neplatný email nebo heslo',
           variant: 'destructive'
         });
       } else {
         toast({
-          title: 'Welcome back!',
-          description: 'You have been signed in successfully'
+          title: 'Vítejte zpět!',
+          description: 'Byly jste úspěšně přihlášeni'
         });
         
         // Get the updated session and redirect
@@ -49,8 +49,8 @@ export default function SignInPage() {
       }
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'An unexpected error occurred',
+        title: 'Chyba',
+        description: 'Došlo k neočekávané chybě',
         variant: 'destructive'
       });
     } finally {
@@ -62,9 +62,9 @@ export default function SignInPage() {
     <div className="min-h-screen flex items-center justify-center bg-muted/20 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
+          <CardTitle className="text-2xl font-bold">Vítejte zpět</CardTitle>
           <CardDescription>
-            Sign in to your AffiliateHub account
+            Přihlaste se do svého účtu AffiliateCatalog
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -78,7 +78,7 @@ export default function SignInPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Zadejte svůj email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
@@ -89,14 +89,14 @@ export default function SignInPage() {
 
             <div className="space-y-2">
               <label htmlFor="password" className="text-sm font-medium">
-                Password
+                Heslo
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Enter your password"
+                  placeholder="Zadejte své heslo"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10 pr-10"
@@ -113,14 +113,14 @@ export default function SignInPage() {
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Signing In...' : 'Sign In'}
+              {isLoading ? 'Přihlašování...' : 'Přihlásit se'}
             </Button>
           </form>
 
           <div className="mt-6 text-center text-sm">
-            <span className="text-muted-foreground">Don't have an account? </span>
+            <span className="text-muted-foreground">Nemáte účet? </span>
             <Link href="/auth/signup" className="text-primary hover:underline font-medium">
-              Sign up
+              Zaregistrujte se
             </Link>
           </div>
         </CardContent>
