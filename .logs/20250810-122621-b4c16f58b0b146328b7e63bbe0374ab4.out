@@ -1,0 +1,63 @@
+  ▲ Next.js 14.2.28
+  - Local:        http://localhost:3000
+  - Environments: .env
+  - Experiments (use with caution):
+    · outputFileTracingRoot
+
+ ✓ Starting...
+ ✓ Ready in 1486ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2.2s (966 modules)
+ GET / 200 in 2575ms
+ ✓ Compiled in 489ms (489 modules)
+ GET / 200 in 46ms
+ ✓ Compiled /api/products in 287ms (509 modules)
+ ✓ Compiled (512 modules)
+ GET /api/categories?tree=true 200 in 658ms
+ GET /api/products?page=1&limit=20 200 in 668ms
+ ✓ Compiled /api/auth/[...nextauth] in 309ms (747 modules)
+ GET /api/categories?tree=true 200 in 315ms
+ GET /api/auth/session 200 in 875ms
+ GET /api/products?page=1&limit=20 200 in 94ms
+ GET /api/auth/session 200 in 29ms
+ GET / 200 in 73ms
+ GET / 200 in 29ms
+ GET / 200 in 32ms
+ GET /api/auth/session 200 in 34ms
+ GET /api/categories?tree=true 200 in 41ms
+ GET /api/auth/session 200 in 33ms
+ GET /api/categories?tree=true 200 in 42ms
+ GET /api/products?page=1&limit=20 200 in 23ms
+ GET /api/products?page=1&limit=20 200 in 24ms
+ GET / 200 in 36ms
+ GET / 200 in 25ms
+ GET / 200 in 35ms
+ GET / 200 in 34ms
+ GET / 200 in 33ms
+ GET / 200 in 32ms
+ GET / 200 in 37ms
+ GET / 200 in 31ms
+ GET / 200 in 30ms
+ GET / 200 in 30ms
+ GET / 200 in 31ms
+ GET / 200 in 27ms
+ GET / 200 in 24ms
+ GET / 200 in 30ms
+ GET / 200 in 25ms
+ GET / 200 in 28ms
+ GET / 200 in 30ms
+ GET / 200 in 27ms
+ GET / 200 in 29ms
+ GET / 200 in 25ms
+ GET / 200 in 31ms
+ GET / 200 in 25ms
+ GET / 200 in 29ms
+ GET / 200 in 26ms
+ GET / 200 in 27ms
+ GET / 200 in 34ms
+ GET / 200 in 26ms
+ GET / 200 in 26ms
+ GET / 200 in 30ms
+ GET / 200 in 27ms
+ GET / 200 in 28ms
+[?25h

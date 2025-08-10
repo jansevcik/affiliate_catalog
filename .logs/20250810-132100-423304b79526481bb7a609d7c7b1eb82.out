@@ -1,0 +1,170 @@
+  ▲ Next.js 14.2.28
+  - Local:        http://localhost:3000
+  - Environments: .env
+  - Experiments (use with caution):
+    · outputFileTracingRoot
+
+ ✓ Starting...
+ ✓ Ready in 1589ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2.2s (975 modules)
+ GET / 200 in 2449ms
+ ✓ Compiled in 429ms (490 modules)
+ ○ Compiling /api/affiliate/imports ...
+ ✓ Compiled /api/affiliate/imports in 805ms (718 modules)
+ ✓ Compiled (744 modules)
+ GET /api/affiliate/imports 200 in 1095ms
+ GET /api/auth/providers 200 in 1532ms
+ GET / 200 in 64ms
+ ✓ Compiled /api/categories in 183ms (747 modules)
+ ✓ Compiled (750 modules)
+ GET /api/auth/session 200 in 415ms
+ GET /api/auth/session 200 in 21ms
+ GET /api/categories?tree=true 200 in 567ms
+ GET /api/products?page=1&limit=20 200 in 604ms
+ GET /api/categories?tree=true 200 in 28ms
+ GET /api/products?page=1&limit=20 200 in 60ms
+ ○ Compiling /auth/signup ...
+ ✓ Compiled /auth/signup in 1006ms (1276 modules)
+ GET /auth/signup 200 in 1257ms
+ GET /auth/signin 200 in 1266ms
+ GET /api/auth/session 200 in 87ms
+ GET /products/cme5pc5baf5vhpf01nz073que 200 in 1725ms
+ GET /products/cme5pc5a6f5rlpf013wxjzncw 200 in 1715ms
+ GET /products/cme5pc593f5nppf012e7y4tt4 200 in 1700ms
+ GET /products/cme5pc58vf5mxpf01k9o57s9s 200 in 1717ms
+ GET /products/cme5pc59qf5q1pf0153diac4x 200 in 1760ms
+ GET /products/cme5pc5auf5txpf01fswyof1n 200 in 1801ms
+ GET /products/cme5pc5b2f5uppf01jugmhzh9 200 in 1795ms
+ GET /products/cme5pc58gf5ldpf01rp337h8w 200 in 1777ms
+ GET /products/cme5pc5aff5sdpf01sdyt1iu8 200 in 1811ms
+ GET /products/cme5pc58of5m5pf016v3pv12m 200 in 1770ms
+ GET /products/cme5pc59bf5ohpf01d790bxbs 200 in 1785ms
+ GET /products/cme5pc57kf5i9pf01y69y7gey 200 in 1809ms
+ GET /products/cme5pc59jf5p9pf0176gmacq7 200 in 1845ms
+ GET /products/cme5pc5amf5t5pf01swb4412i 200 in 1833ms
+ GET /products/cme5pc588f5klpf01tfqlqz82 200 in 1826ms
+ GET /products/cme5pc59yf5qtpf0182g2kggx 200 in 1824ms
+ GET /products/cme5pc57sf5j1pf01emnwo6hi 200 in 1821ms
+ GET /products/cme5pc574f5gppf01eba7vm88 200 in 1821ms
+ GET /products/cme5pc580f5jtpf01ohxr4he1 200 in 1826ms
+ GET /products/cme5pc57cf5hhpf01u4ht2pf8 200 in 1820ms
+ GET /api/auth/session 200 in 448ms
+ GET /api/auth/session 200 in 139ms
+ GET /api/auth/session 200 in 77ms
+ GET /api/auth/session 200 in 89ms
+ GET /api/auth/session 200 in 139ms
+ GET /api/auth/session 200 in 64ms
+ GET /api/auth/session 200 in 46ms
+ GET /api/auth/session 200 in 40ms
+ GET /api/auth/session 200 in 80ms
+ GET /api/auth/session 200 in 32ms
+ GET /api/auth/session 200 in 44ms
+ GET /api/auth/session 200 in 27ms
+ GET /api/auth/session 200 in 24ms
+ GET /api/auth/session 200 in 35ms
+ GET /api/auth/session 200 in 60ms
+ GET /api/auth/session 200 in 19ms
+ GET /api/auth/session 200 in 23ms
+ GET /api/auth/session 200 in 23ms
+ GET /api/auth/session 200 in 17ms
+ GET /api/auth/session 200 in 29ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 16ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 29ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 20ms
+ GET /api/auth/session 200 in 20ms
+ GET /api/auth/session 200 in 19ms
+ GET /api/auth/session 200 in 39ms
+ GET /api/auth/session 200 in 17ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 16ms
+ GET /api/auth/session 200 in 17ms
+ GET /api/auth/session 200 in 32ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 17ms
+ GET /api/auth/session 200 in 17ms
+ GET /api/auth/session 200 in 16ms
+ GET /api/auth/session 200 in 19ms
+ GET /api/auth/session 200 in 27ms
+ GET /api/auth/session 200 in 17ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 16ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 33ms
+ GET /api/auth/session 200 in 37ms
+ GET /api/auth/csrf 200 in 16ms
+ ✓ Compiled /api/signup in 354ms (782 modules)
+ POST /api/signup 201 in 757ms
+ GET / 200 in 48ms
+ GET /api/auth/csrf 200 in 43ms
+ POST /api/auth/callback/credentials 302 in 377ms
+ ✓ Compiled /_not-found in 361ms (1281 modules)
+ GET /dashboard 404 in 416ms
+ GET / 200 in 38ms
+ GET /api/auth/session 200 in 66ms
+ GET /api/auth/session 200 in 20ms
+ GET /api/categories?tree=true 200 in 151ms
+ GET /api/products?page=1&limit=20 200 in 194ms
+ GET /api/categories?tree=true 200 in 29ms
+ GET /api/products?page=1&limit=20 200 in 56ms
+ ○ Compiling /wishlist ...
+ ✓ Compiled /wishlist in 618ms (1291 modules)
+ GET /wishlist 200 in 691ms
+ GET /api/auth/session 200 in 48ms
+ GET /api/auth/session 200 in 23ms
+ ✓ Compiled /api/wishlist in 232ms (791 modules)
+ GET /api/wishlist 200 in 372ms
+ GET /api/wishlist 200 in 23ms
+ GET /api/affiliate/imports 200 in 105ms
+ GET /products/cme5nkezk000fyghqtb5w3ctd 200 in 168ms
+ GET /products/cme5nkf00000nyghqu6o9vjcp 200 in 193ms
+ GET /api/auth/session 200 in 46ms
+ GET /api/auth/session 200 in 19ms
+ GET /api/auth/session 200 in 19ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 21ms
+ GET / 200 in 45ms
+ GET /api/auth/session 200 in 49ms
+ GET /api/auth/session 200 in 29ms
+ GET /api/auth/session 200 in 22ms
+ GET /api/categories?tree=true 200 in 136ms
+ GET /api/auth/session 200 in 24ms
+ GET /api/auth/session 200 in 25ms
+ GET /api/categories?tree=true 200 in 43ms
+ GET /api/products?page=1&limit=20 200 in 203ms
+ GET /api/auth/session 200 in 19ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/products?page=1&limit=20 200 in 62ms
+ ○ Compiling /admin ...
+ ✓ Compiled /admin in 832ms (1365 modules)
+ GET /admin 200 in 928ms
+ GET /api/auth/session 200 in 60ms
+ GET /api/auth/session 200 in 25ms
+ GET /api/auth/session 200 in 19ms
+ GET /api/auth/session 200 in 52ms
+ GET /api/auth/session 200 in 21ms
+ GET /api/categories?tree=true 200 in 153ms
+ GET /api/categories?tree=true 200 in 30ms
+ GET /api/products?page=1&limit=20 200 in 218ms
+ GET /api/auth/session 200 in 54ms
+ GET /api/auth/session 200 in 23ms
+ GET /api/products?page=1&limit=20 200 in 69ms
+ GET /api/auth/session 200 in 24ms
+ GET /api/affiliate/imports 200 in 115ms
+ GET /auth/signin 200 in 48ms
+ GET /api/auth/session 200 in 50ms
+ GET /api/auth/session 200 in 20ms
+ GET /api/auth/session 200 in 21ms
+ GET /api/auth/session 200 in 24ms
+ GET /api/auth/session 200 in 23ms
+ GET /api/auth/session 200 in 36ms
+ GET /api/auth/session 200 in 32ms
+ GET /api/auth/session 200 in 19ms
+ GET /api/auth/session 200 in 17ms
+[?25h
