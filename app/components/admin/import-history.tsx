@@ -2,12 +2,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { FileText, CheckCircle, XCircle, Clock, AlertCircle } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, Clock, AlertCircle, Trash2, RotateCcw } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { useToast } from '../../hooks/use-toast';
 
 interface ImportRecord {
   id: string;
@@ -28,6 +29,8 @@ export function ImportHistory() {
   const [imports, setImports] = useState<ImportRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedImport, setSelectedImport] = useState<ImportRecord | null>(null);
+  const [isCleaningUp, setIsCleaningUp] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchImportHistory();
@@ -35,9 +38,13 @@ export function ImportHistory() {
 
   const fetchImportHistory = async () => {
     try {
-      // This would normally be a dedicated endpoint
-      // For now, we'll show sample data since we don't have the endpoint
-      setImports([]);
+      const response = await fetch('/api/affiliate/imports');
+      if (response.ok) {
+        const data = await response.json();
+        setImports(data);
+      } else {
+        console.error('Failed to fetch import history');
+      }
     } catch (error) {
       console.error('Error fetching import history:', error);
     } finally {
@@ -77,13 +84,84 @@ export function ImportHistory() {
     return new Date(dateString).toLocaleString();
   };
 
+  const cleanupStuckImports = async () => {
+    setIsCleaningUp(true);
+    try {
+      const response = await fetch('/api/affiliate/imports', {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        toast({
+          title: 'Cleanup Successful',
+          description: result.message
+        });
+        fetchImportHistory(); // Refresh the list
+      } else {
+        toast({
+          title: 'Cleanup Failed',
+          description: 'Failed to cleanup stuck imports',
+          variant: 'destructive'
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'An error occurred during cleanup',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsCleaningUp(false);
+    }
+  };
+
+  const deleteImport = async (importId: string) => {
+    try {
+      const response = await fetch(`/api/affiliate/imports?importId=${importId}`, {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
+        toast({
+          title: 'Import Deleted',
+          description: 'Import record has been deleted successfully'
+        });
+        fetchImportHistory(); // Refresh the list
+      } else {
+        toast({
+          title: 'Delete Failed',
+          description: 'Failed to delete import record',
+          variant: 'destructive'
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'An error occurred while deleting import',
+        variant: 'destructive'
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-semibold">Import History</h2>
-        <Button variant="outline" onClick={fetchImportHistory}>
-          Refresh
-        </Button>
+        <div className="flex space-x-2">
+          <Button 
+            variant="outline" 
+            onClick={cleanupStuckImports} 
+            disabled={isCleaningUp}
+            className="flex items-center"
+          >
+            <RotateCcw className={`h-4 w-4 mr-2 ${isCleaningUp ? 'animate-spin' : ''}`} />
+            {isCleaningUp ? 'Cleaning...' : 'Cleanup Stuck'}
+          </Button>
+          <Button variant="outline" onClick={fetchImportHistory}>
+            Refresh
+          </Button>
+        </div>
       </div>
 
       <Card>
@@ -153,25 +231,38 @@ export function ImportHistory() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {importRecord.errorLog && (
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button variant="outline" size="sm">
-                              View Errors
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-2xl">
-                            <DialogHeader>
-                              <DialogTitle>Import Errors</DialogTitle>
-                            </DialogHeader>
-                            <div className="max-h-96 overflow-y-auto">
-                              <pre className="text-sm bg-muted p-4 rounded-md whitespace-pre-wrap">
-                                {importRecord.errorLog}
-                              </pre>
-                            </div>
-                          </DialogContent>
-                        </Dialog>
-                      )}
+                      <div className="flex space-x-2">
+                        {importRecord.errorLog && (
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="outline" size="sm">
+                                View Errors
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-2xl">
+                              <DialogHeader>
+                                <DialogTitle>Import Errors</DialogTitle>
+                              </DialogHeader>
+                              <div className="max-h-96 overflow-y-auto">
+                                <pre className="text-sm bg-muted p-4 rounded-md whitespace-pre-wrap">
+                                  {importRecord.errorLog}
+                                </pre>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                        )}
+                        
+                        {(importRecord.status === 'PROCESSING' || importRecord.status === 'FAILED') && (
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => deleteImport(importRecord.id)}
+                            className="text-red-600 hover:text-red-700"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

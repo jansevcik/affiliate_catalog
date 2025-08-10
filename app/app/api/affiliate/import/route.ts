@@ -46,8 +46,13 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    console.log(`Starting import for ${affiliateProgram.name}: ${file.name} (${xmlFormat} format)`);
+    
     const xmlContent = await file.text();
+    console.log(`XML file size: ${xmlContent.length} characters`);
+    
     const parsedProducts = await XmlParser.parseXml(xmlContent, xmlFormat);
+    console.log(`Parsed ${parsedProducts.length} products from XML`);
 
     let successCount = 0;
     let errorCount = 0;
@@ -147,23 +152,37 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Import error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const fullErrorLog = error instanceof Error ? `${error.message}\n\nStack trace:\n${error.stack}` : errorMessage;
+    
+    console.error('Import error:', errorMessage);
+    console.error('Full error details:', error);
 
     // Update import record with error
     if (importRecord) {
-      await prisma.productImport.update({
-        where: { id: importRecord.id },
-        data: {
-          status: ImportStatus.FAILED,
-          errorLog: error instanceof Error ? error.message : 'Unknown error'
-        }
-      });
+      try {
+        await prisma.productImport.update({
+          where: { id: importRecord.id },
+          data: {
+            status: ImportStatus.FAILED,
+            errorLog: fullErrorLog
+          }
+        });
+      } catch (updateError) {
+        console.error('Failed to update import record with error:', updateError);
+      }
     }
 
     return NextResponse.json(
-      { error: 'Import failed: ' + (error instanceof Error ? error.message : 'Unknown error') },
+      { 
+        error: 'Import failed: ' + errorMessage,
+        importId: importRecord?.id,
+        details: fullErrorLog 
+      },
       { status: 500 }
     );
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
