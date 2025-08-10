@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Providers } from '@/components/providers';
-import { Header } from '@/components/header';
+import { LayoutContent } from '@/components/layout-content';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 
@@ -23,8 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <div className="min-h-screen bg-background">
-            <Header />
-            <main>{children}</main>
+            <LayoutContent>{children}</LayoutContent>
             <Toaster />
           </div>
         </Providers>

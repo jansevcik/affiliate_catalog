@@ -4,7 +4,6 @@
 import { useState, useEffect } from 'react';
 import { ProductGrid } from '@/components/product-grid';
 import { CategorySidebar } from '@/components/category-sidebar';
-import { ImportStatusBanner } from '@/components/import-status-banner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -51,6 +50,20 @@ export default function HomePage() {
   useEffect(() => {
     fetchProducts();
   }, [selectedCategoryId, searchQuery, minPrice, maxPrice, sortBy, currentPage]);
+
+  // Listen for search events from header
+  useEffect(() => {
+    const handleSearchEvent = (event: CustomEvent) => {
+      setSearchQuery(event.detail);
+      setCurrentPage(1);
+    };
+
+    window.addEventListener('searchQuery', handleSearchEvent as EventListener);
+    
+    return () => {
+      window.removeEventListener('searchQuery', handleSearchEvent as EventListener);
+    };
+  }, []);
 
   const fetchProducts = async () => {
     setIsLoading(true);
@@ -109,9 +122,6 @@ export default function HomePage() {
       />
       
       <div className="flex-1 p-6">
-        {/* Import Status Banner */}
-        <ImportStatusBanner />
-        
         {/* Hero Section */}
         <section className="mb-8 text-center">
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">

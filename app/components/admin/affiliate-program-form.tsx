@@ -67,6 +67,7 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
     
     try {
       const payload = {
+        ...(editingProgram && { id: editingProgram.id }),
         name: formData.name,
         baseUrl: formData.baseUrl,
         commissionRate: parseFloat(formData.commissionRate),
@@ -75,7 +76,7 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
       };
 
       const response = await fetch('/api/affiliate-programs', {
-        method: 'POST',
+        method: editingProgram ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
@@ -83,7 +84,9 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
       if (response.ok) {
         toast({
           title: 'Success',
-          description: 'Affiliate program created successfully'
+          description: editingProgram 
+            ? 'Affiliate program updated successfully'
+            : 'Affiliate program created successfully'
         });
         
         resetForm();
@@ -94,7 +97,7 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
         const error = await response.json();
         toast({
           title: 'Error',
-          description: error.error || 'Failed to create program',
+          description: error.error || `Failed to ${editingProgram ? 'update' : 'create'} program`,
           variant: 'destructive'
         });
       }

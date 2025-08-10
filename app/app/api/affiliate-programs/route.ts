@@ -62,3 +62,36 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { id, name, baseUrl, commissionRate, cookieDays, restrictions } = body;
+
+    if (!id || !name || !baseUrl || commissionRate === undefined || !cookieDays) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    const program = await prisma.affiliateProgram.update({
+      where: { id },
+      data: {
+        name,
+        baseUrl,
+        commissionRate,
+        cookieDays,
+        restrictions: restrictions || null
+      }
+    });
+
+    return NextResponse.json(program);
+  } catch (error) {
+    console.error('Error updating affiliate program:', error);
+    return NextResponse.json(
+      { error: 'Failed to update affiliate program' },
+      { status: 500 }
+    );
+  }
+}

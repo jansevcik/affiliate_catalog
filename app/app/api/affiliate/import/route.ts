@@ -192,17 +192,39 @@ async function findOrCreateCategoryHierarchy(categoryHierarchy: string[]): Promi
   let parentId = null;
 
   for (const categoryName of categoryHierarchy) {
-    const slug = CategoryUtils.createSlug(categoryName);
-
-    const category: any = await prisma.category.upsert({
-      where: { slug },
-      update: {},
-      create: {
+    // First try to find an existing category with the same name and parent
+    let category: any = await prisma.category.findFirst({
+      where: {
         name: categoryName,
-        slug,
-        parentId
+        parentId: parentId
       }
     });
+
+    // If not found, create a new one
+    if (!category) {
+      const slug = CategoryUtils.createSlug(categoryName);
+      // Make slug unique if needed
+      let uniqueSlug = slug;
+      let counter = 1;
+      
+      while (true) {
+        const existingCategory = await prisma.category.findUnique({
+          where: { slug: uniqueSlug }
+        });
+        
+        if (!existingCategory) break;
+        uniqueSlug = `${slug}-${counter}`;
+        counter++;
+      }
+
+      category = await prisma.category.create({
+        data: {
+          name: categoryName,
+          slug: uniqueSlug,
+          parentId
+        }
+      });
+    }
 
     parentId = category.id;
   }
