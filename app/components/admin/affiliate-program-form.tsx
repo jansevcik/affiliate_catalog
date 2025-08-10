@@ -83,10 +83,10 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
 
       if (response.ok) {
         toast({
-          title: 'Success',
+          title: 'Úspěch',
           description: editingProgram 
-            ? 'Affiliate program updated successfully'
-            : 'Affiliate program created successfully'
+            ? 'Affiliate program byl úspěšně aktualizován'
+            : 'Affiliate program byl úspěšně vytvořen'
         });
         
         resetForm();
@@ -96,15 +96,15 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
       } else {
         const error = await response.json();
         toast({
-          title: 'Error',
-          description: error.error || `Failed to ${editingProgram ? 'update' : 'create'} program`,
+          title: 'Chyba',
+          description: error.error || `Nepodařilo se ${editingProgram ? 'aktualizovat' : 'vytvořit'} program`,
           variant: 'destructive'
         });
       }
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'An unexpected error occurred',
+        title: 'Chyba',
+        description: 'Došlo k neočekávané chybě',
         variant: 'destructive'
       });
     }
@@ -137,37 +137,72 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
     setShowForm(true);
   };
 
+  const handleDelete = async (program: AffiliateProgram) => {
+    if (!confirm(`Opravdu chcete smazat program "${program.name}"? ${program._count?.products ? 'Program bude pouze deaktivován, protože obsahuje produkty.' : 'Tato akce je nevratná.'}`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/affiliate-programs?id=${program.id}`, {
+        method: 'DELETE'
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: 'Úspěch',
+          description: result.message
+        });
+        fetchPrograms();
+        onProgramAdded();
+      } else {
+        toast({
+          title: 'Chyba',
+          description: result.error || 'Nepodařilo se smazat program',
+          variant: 'destructive'
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Chyba',
+        description: 'Došlo k neočekávané chybě',
+        variant: 'destructive'
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold">Affiliate Programs</h2>
+        <h2 className="text-2xl font-semibold">Affiliate programy</h2>
         <Dialog open={showForm} onOpenChange={setShowForm}>
           <DialogTrigger asChild>
             <Button onClick={() => openForm()}>
               <Plus className="h-4 w-4 mr-2" />
-              Add Program
+              Přidat program
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
-                {editingProgram ? 'Edit' : 'Create'} Affiliate Program
+                {editingProgram ? 'Upravit' : 'Vytvořit'} affiliate program
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Program Name</Label>
+                <Label htmlFor="name">Název programu</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="e.g., Žilkahodinky.cz"
+                  placeholder="např. Žilkahodinky.cz"
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="baseUrl">Base URL</Label>
+                <Label htmlFor="baseUrl">Základní URL</Label>
                 <Input
                   id="baseUrl"
                   value={formData.baseUrl}
@@ -179,7 +214,7 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="commissionRate">Commission Rate (%)</Label>
+                  <Label htmlFor="commissionRate">Sazba provize (%)</Label>
                   <Input
                     id="commissionRate"
                     type="number"
@@ -192,7 +227,7 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="cookieDays">Cookie Duration (days)</Label>
+                  <Label htmlFor="cookieDays">Platnost cookies (dní)</Label>
                   <Input
                     id="cookieDays"
                     type="number"
@@ -205,21 +240,21 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="restrictions">Restrictions (optional)</Label>
+                <Label htmlFor="restrictions">Omezení (volitelné)</Label>
                 <Textarea
                   id="restrictions"
                   value={formData.restrictions}
                   onChange={(e) => setFormData(prev => ({ ...prev, restrictions: e.target.value }))}
-                  placeholder="Any special terms or restrictions..."
+                  placeholder="Jakékoli speciální podmínky nebo omezení..."
                 />
               </div>
 
               <div className="flex justify-end space-x-2">
                 <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
-                  Cancel
+                  Zrušit
                 </Button>
                 <Button type="submit">
-                  {editingProgram ? 'Update' : 'Create'} Program
+                  {editingProgram ? 'Aktualizovat' : 'Vytvořit'} program
                 </Button>
               </div>
             </form>
@@ -231,22 +266,22 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
         <CardContent className="p-0">
           {isLoading ? (
             <div className="p-8 text-center text-muted-foreground">
-              Loading programs...
+              Načítání programů...
             </div>
           ) : programs.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground">
-              <p>No affiliate programs found</p>
-              <p className="text-sm mt-2">Create your first program to start importing products</p>
+              <p>Žádné affiliate programy nenalezeny</p>
+              <p className="text-sm mt-2">Vytvořte svůj první program pro začátek importu produktů</p>
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Program</TableHead>
-                  <TableHead>Commission</TableHead>
-                  <TableHead>Cookie Days</TableHead>
-                  <TableHead>Products</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>Provize</TableHead>
+                  <TableHead>Cookies</TableHead>
+                  <TableHead>Produkty</TableHead>
+                  <TableHead>Akce</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -262,12 +297,12 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
                       </div>
                     </TableCell>
                     <TableCell>{program.commissionRate}%</TableCell>
-                    <TableCell>{program.cookieDays} days</TableCell>
+                    <TableCell>{program.cookieDays} dní</TableCell>
                     <TableCell>
                       <div className="text-sm">
-                        <div>{program._count?.products || 0} products</div>
+                        <div>{program._count?.products || 0} produktů</div>
                         <div className="text-muted-foreground">
-                          {program._count?.productImports || 0} imports
+                          {program._count?.productImports || 0} importů
                         </div>
                       </div>
                     </TableCell>
@@ -279,6 +314,14 @@ export function AffiliateProgramForm({ onProgramAdded }: AffiliateProgramFormPro
                           onClick={() => openForm(program)}
                         >
                           <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDelete(program)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </TableCell>

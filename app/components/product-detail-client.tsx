@@ -62,8 +62,8 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
   const handleWishlistToggle = async () => {
     if (!session) {
       toast({
-        title: "Authentication Required",
-        description: "Please sign in to add products to your wishlist",
+        title: "Přihlášení požadováno",
+        description: "Prosím přihlaste se pro přidání produktů do seznamu přání",
         variant: "destructive"
       });
       return;
@@ -79,14 +79,14 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
       if (response.ok) {
         setIsWishlisted(!isWishlisted);
         toast({
-          title: isWishlisted ? "Removed from wishlist" : "Added to wishlist",
-          description: `${product.name} ${isWishlisted ? 'removed from' : 'added to'} your wishlist`
+          title: isWishlisted ? "Odebráno ze seznamu přání" : "Přidáno do seznamu přání",
+          description: `${product.name} ${isWishlisted ? 'byl odebrán ze' : 'byl přidán do'} vašeho seznamu přání`
         });
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to update wishlist",
+        title: "Chyba",
+        description: "Nepodařilo se aktualizovat seznam přání",
         variant: "destructive"
       });
     }
@@ -108,13 +108,13 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
       try {
         await navigator.clipboard.writeText(window.location.href);
         toast({
-          title: "Link copied",
-          description: "Product link has been copied to clipboard"
+          title: "Odkaz zkopírován",
+          description: "Odkaz na produkt byl zkopírován do schránky"
         });
       } catch (error) {
         toast({
-          title: "Share failed",
-          description: "Unable to share this product",
+          title: "Sdílení se nezdařilo",
+          description: "Nelze sdílet tento produkt",
           variant: "destructive"
         });
       }
@@ -132,7 +132,7 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
         <Link href="/">
           <Button variant="ghost" className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Products
+            Zpět na produkty
           </Button>
         </Link>
       </div>
@@ -214,7 +214,7 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
               className="flex-1"
             >
               <ExternalLink className="h-5 w-5 mr-2" />
-              Visit Store
+              Navštívit obchod
             </Button>
             
             {session && (
@@ -236,8 +236,10 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>Sold by {product.affiliateProgram.name}</span>
-                <span>{product.affiliateProgram.commissionRate}% commission</span>
+                <span>Prodáváno přes {product.affiliateProgram.name}</span>
+                {session?.user?.isAdmin && (
+                  <span>{product.affiliateProgram.commissionRate}% provize</span>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -247,7 +249,7 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold flex items-center">
                 <Info className="h-5 w-5 mr-2" />
-                Description
+                Popis
               </h2>
               <Card>
                 <CardContent className="pt-6">
@@ -267,7 +269,7 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
         <div className="mt-12">
           <h2 className="text-xl font-semibold mb-6 flex items-center">
             <Tag className="h-5 w-5 mr-2" />
-            Specifications
+            Specifikace
           </h2>
           <Card>
             <CardContent className="pt-6">
@@ -289,7 +291,7 @@ export function ProductDetailClient({ product }: ProductDetailProps) {
         <div className="mt-8">
           <Card>
             <CardHeader>
-              <CardTitle>Product Details</CardTitle>
+              <CardTitle>Detaily produktu</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
